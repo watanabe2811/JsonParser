@@ -3,12 +3,115 @@
  */
 package vn.com.watanabe.etl.json;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import com.alibaba.fastjson.JSON;
 public class App {
+    private static List<String> lines;
+
     public String getGreeting() {
         return "Hello world.";
     }
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
+        File file = new File("data", "rs_details_array.json");
+        System.out.println(file.exists());
+        try {
+            lines = Files.readAllLines(Paths.get(file.getPath()));
+            int count=0;
+            for(String line : lines){
+                // System.out.println(line);
+                MyLink link = JSON.parseObject(line, MyLink.class);
+                System.out.println(link);
+            
+
+                // count++;
+                // if(count>10){
+                //     break;
+                // }
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    static class MyLink{
+        String category;
+        int count;
+        MyURL info= new MyURL();
+        public MyURL getInfo() {
+            return info;
+        }
+
+        public void setInfo(MyURL info) {
+            this.info = info;
+        }
+
+        
+        
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+        public MyLink() {
+        }
+
+        @Override
+        public String toString() {
+            return "MyLink [category=" + category + ", count=" + count + ", info=" + info + "]";
+        }
+        
+        
+    }
+    static public class MyURL{
+        String url;
+        String url_clone;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getUrl_clone() {
+            return url_clone;
+        }
+
+        public void setUrl_clone(String url_clone) {
+            this.url_clone = url_clone;
+        }
+
+        // public MyURL(String url, String url_clone) {
+        //     this.url = url;
+        //     this.url_clone = url_clone;
+        // }
+
+        public MyURL() {
+        }
+
+        @Override
+        public String toString() {
+            return "MyURL [url=" + url + ", url_clone=" + url_clone + "]";
+        }
+
+        
+        
     }
 }
